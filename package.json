@@ -1,0 +1,25 @@
+{
+  "name": "com.funbrainlab.vrlink",
+  "version": "0.3.1",
+  "displayName": "FunBrain VR Link",
+  "description": "VR 재활 앱을 웹앱과 연결합니다: [Tunable] 조절, [Monitor] 상태 위젯, [TunableAction] 버튼, 수행 기록 전송, WebRTC 화면 스트리밍. Vive Focus Vision / Meta Quest 3 (OpenXR) 대응.",
+  "unity": "6000.0",
+  "author": {
+    "name": "FunBrainLab"
+  },
+  "keywords": [
+    "vr",
+    "rehabilitation",
+    "webrtc",
+    "openxr",
+    "telemetry"
+  ],
+  "dependencies": {},
+  "samples": [
+    {
+      "displayName": "Probe (0단계 실기기 검증)",
+      "description": "FPS·기기 정보 표시, 샘플 Tunable 파라미터, 부하 테스트용 큐브",
+      "path": "Samples~/Probe"
+    }
+  ]
+}

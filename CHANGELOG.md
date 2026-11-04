@@ -1,0 +1,20 @@
+# Changelog
+
+## [0.3.1] - 2026-11-04
+- WebRTC 시그널에 session 추가 — 다른 창·PC 의 응답이 섞여 연결이 실패하던 문제
+
+## [0.3.0] - 2026-11-04
+- 연결 코드 흐름: PairingMode (AskOnFirstRun 기본 / AutoFromDevice / Fixed), 헤드셋 안 키패드(포인터 + 시선 dwell), USB 주입(inbox/pairing.json), 기기 ID 기반 코드, ResetPairingCode()
+- 코드가 정해질 때까지 통로를 열지 않음 (IsLinked)
+- asmdef 에 UnityEngine.UI 참조 추가
+
+## [0.2.0] - 2026-11-04
+- [Monitor] 상태 표시 (number/bar/ring/dial/sparkline/timer/trafficlight/led/badge/text/xy), 변수별 Interval 로 바뀐 값만 전송
+- [TunableAction] 버튼 동작 (button/primary/danger, Confirm), 요청번호로 중복 실행 방지
+- [Tunable] 에 Widget/Unit/Order 추가 (slider/stepper/number/knob/toggle/checkbox/dropdown/buttons/radio/text/textarea/color)
+- 스키마 v2: {controls, monitors, actions}
+- Probe 샘플에 가짜 과제(시작/일시정지/초기화) 추가
+
+## [0.1.0] - 2026-11-04
+- 첫 뼈대: [Tunable] 수집·적용, USB(ADB 파일)/RTDB 통로, 기기 자동 감지, 수행 기록, WebRTC 관찰 카메라 스트리밍, 빌드 설정 점검, Probe 검증 샘플
+- 실기기 미검증

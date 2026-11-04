@@ -1,0 +1,23 @@
+{
+    "name": "FunBrainLab.VRLink",
+    "rootNamespace": "FunBrainLab.VRLink",
+    "references": [
+        "Unity.WebRTC",
+        "UnityEngine.UI"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.webrtc",
+            "expression": "3.0.0-pre.1",
+            "define": "VRLINK_WEBRTC"
+        }
+    ],
+    "noEngineReferences": false
+}
