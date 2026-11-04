@@ -45,6 +45,8 @@ namespace FunBrainLab.VRLink
         VideoStreamTrack track;
         bool remoteSet;
         string session = "";
+        /// <summary>웹앱이 request 에 실어 보낸 ICE 서버(STUN/TURN 임시 자격증명). 헤드셋에는 저장하지 않는다</summary>
+        List<Dictionary<string, object>> requestedIce;
         readonly List<RTCIceCandidate> pendingRemote = new List<RTCIceCandidate>();
 
         IEnumerator Start()
@@ -85,7 +87,16 @@ namespace FunBrainLab.VRLink
             if (type != "request" && sess != session) return;
             switch (type)
             {
-                case "request": session = sess; StartCoroutine(StartSession()); break;
+                case "request":
+                    session = sess;
+                    requestedIce = null;
+                    if (m.TryGetValue("iceServers", out var ic) && ic is List<object> list)
+                    {
+                        requestedIce = new List<Dictionary<string, object>>();
+                        foreach (var item in list) if (item is Dictionary<string, object> d) requestedIce.Add(d);
+                    }
+                    StartCoroutine(StartSession());
+                    break;
                 case "answer": StartCoroutine(SetAnswer(m.TryGetValue("sdp", out var s) ? s as string : null)); break;
                 case "candidate": AddRemoteCandidate(m); break;
                 case "stop": StopSession(); VRLink.Log("webrtc_stopped"); break;
@@ -221,6 +232,26 @@ namespace FunBrainLab.VRLink
         RTCIceServer[] BuildIceServers()
         {
             var list = new List<RTCIceServer>();
+            // 웹앱이 보낸 서버가 있으면 그것을 우선 사용 (서버가 발급한 2시간짜리 TURN 자격증명 포함)
+            if (requestedIce != null && requestedIce.Count > 0)
+            {
+                foreach (var d in requestedIce)
+                {
+                    var urls = new List<string>();
+                    if (d.TryGetValue("urls", out var u))
+                    {
+                        if (u is List<object> ul) { foreach (var x in ul) if (x != null) urls.Add(x.ToString()); }
+                        else if (u is string us) urls.Add(us);
+                    }
+                    if (urls.Count == 0) continue;
+                    var srv = new RTCIceServer { urls = urls.ToArray() };
+                    if (d.TryGetValue("username", out var un) && un != null) { srv.username = un.ToString(); srv.credentialType = RTCIceCredentialType.Password; }
+                    if (d.TryGetValue("credential", out var cr) && cr != null) srv.credential = cr.ToString();
+                    list.Add(srv);
+                }
+                VRLink.Log("webrtc_ice_from_web", list.Count);
+                return list.ToArray();
+            }
             if (!string.IsNullOrEmpty(link.stunUrl)) list.Add(new RTCIceServer { urls = new[] { link.stunUrl } });
             if (!string.IsNullOrEmpty(link.turnUrl))
                 list.Add(new RTCIceServer

@@ -165,13 +165,14 @@ Unity 코드의 `Widget` 값이 **기본값**이고, 웹앱 편집 모드에서 
 
 ```
 웹앱                                              헤드셋(앱)
- │ toDevice ← {type:"request", session}   ───▶   관찰 카메라 시작, offer 생성
+ │ toDevice ← {type:"request", session, iceServers?} ─▶ 관찰 카메라 시작, offer 생성
  │                                        ◀───   toWeb ← {type:"offer", sdp, width, height, device, session}
  │ toDevice ← {type:"answer", sdp, session} ─▶
  │ toDevice ← {type:"candidate", candidate, sdpMid, sdpMLineIndex, session}  (양방향)
  │                                        ◀───   toWeb ← {type:"candidate", ..., session}
  │ toDevice ← {type:"stop", session}      ───▶   세션 종료
 ```
+- `iceServers`: `[{urls:[…], username?, credential?}]`. 웹앱이 서버(/api/turn-credentials)에서 받은 2시간짜리 TURN 자격증명을 포함해 보낸다. 헤드셋은 있으면 이것을 우선 쓰고 저장하지 않는다. 없으면 Inspector 의 STUN/TURN 설정.
 - `session`: 웹앱이 request 마다 새로 만드는 문자열. 헤드셋은 request 의 session 을 기억하고 그 밖의 메시지는 session 이 같을 때만 처리하며, 웹앱도 자기 session 의 offer/candidate 만 받는다. 여러 창·PC 가 같은 기기를 열어 두어도 응답이 섞이지 않는다.
 - 영상 자체는 Firebase를 거치지 않고 P2P(또는 TURN 중계)로만 흐릅니다. Firebase에는 위 시그널 메시지만 지나갑니다.
 - 헤드셋이 offer를 만들고(송신), 웹앱은 수신 전용(`recvonly`)으로 answer합니다.

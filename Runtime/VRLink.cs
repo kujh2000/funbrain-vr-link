@@ -16,7 +16,7 @@ namespace FunBrainLab.VRLink
     [DefaultExecutionOrder(-1000)]
     public sealed class VRLink : MonoBehaviour
     {
-        public const string PackageVersion = "0.3.1";
+        public const string PackageVersion = "0.3.2";
 
         [Header("연결 코드")]
         [Tooltip("AskOnFirstRun: 처음 실행 때 헤드셋에서 입력(웹앱 발급 코드, 병원용) · AutoFromDevice: 기기 ID로 자동(연구실 시험) · Fixed: 아래 고정값")]
