@@ -16,7 +16,7 @@ namespace FunBrainLab.VRLink
     [DefaultExecutionOrder(-1000)]
     public sealed class VRLink : MonoBehaviour
     {
-        public const string PackageVersion = "0.3.2";
+        public const string PackageVersion = "0.3.3";
 
         [Header("연결 코드")]
         [Tooltip("AskOnFirstRun: 처음 실행 때 헤드셋에서 입력(웹앱 발급 코드, 병원용) · AutoFromDevice: 기기 ID로 자동(연구실 시험) · Fixed: 아래 고정값")]
@@ -221,7 +221,7 @@ namespace FunBrainLab.VRLink
             var applied = new Dictionary<string, object>();
             foreach (var id in changed)
             {
-                if (!Registry.TryGet(id, out var e)) continue;
+                if (!Registry.TryGetTunable(id, out var e)) continue;
                 var v = e.GetForWire();
                 applied[id] = v;
                 try { ParamChanged?.Invoke(id, e.Get()); }
