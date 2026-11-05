@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.4.0] - 2026-11-05
+- 메뉴 FunBrain → VR Link → "협력업체용 DLL 패키지 내보내기…": Runtime 소스를 FunBrainLab.VRLink.dll 로 컴파일하고 Firebase 주소·연결 코드 방식·STUN 을 DLL 에 고정(VRLINK_PARTNER). 받는 쪽 인스펙터에는 설정이 보이지 않음
+
 ## [0.3.3] - 2026-11-04
 - 컴파일 오류 수정: VRLink.cs 의 Registry.TryGet → TryGetTunable (실제 Unity 첫 컴파일 보고 반영)
 

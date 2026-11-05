@@ -16,39 +16,81 @@ namespace FunBrainLab.VRLink
     [DefaultExecutionOrder(-1000)]
     public sealed class VRLink : MonoBehaviour
     {
-        public const string PackageVersion = "0.3.3";
+        public const string PackageVersion = "0.4.0";
 
         [Header("연결 코드")]
         [Tooltip("AskOnFirstRun: 처음 실행 때 헤드셋에서 입력(웹앱 발급 코드, 병원용) · AutoFromDevice: 기기 ID로 자동(연구실 시험) · Fixed: 아래 고정값")]
+#if VRLINK_PARTNER
+        [HideInInspector]
+#endif
         public PairingMode pairingMode = PairingMode.AskOnFirstRun;
         [Tooltip("Fixed 모드일 때만. 6자, I·O·0·1 제외. 기기 한 대 전용 빌드에서만 사용")]
+#if VRLINK_PARTNER
+        [HideInInspector]
+#endif
         public string fixedCode = "";
         [Tooltip("코드 입력 키패드까지의 거리(m)")]
+#if VRLINK_PARTNER
+        [HideInInspector]
+#endif
         public float keypadDistance = 1.6f;
 
         [Header("네트워크 (Firebase Realtime Database)")]
         [Tooltip("예: https://funbrainlab-apps-default-rtdb.asia-southeast1.firebasedatabase.app — 비우면 네트워크 통로를 끕니다")]
+#if VRLINK_PARTNER
+        [HideInInspector]
+#endif
         public string databaseUrl = "";
         [Tooltip("RTDB 인증 토큰(선택). 연구실 표준 설정은 README 참고")]
+#if VRLINK_PARTNER
+        [HideInInspector]
+#endif
         public string authToken = "";
+#if VRLINK_PARTNER
+        [HideInInspector]
+#endif
         public bool useNetwork = true;
 
         [Header("USB (ADB 파일)")]
+#if VRLINK_PARTNER
+        [HideInInspector]
+#endif
         public bool useAdbFiles = true;
 
         [Header("WebRTC ICE 서버")]
+#if VRLINK_PARTNER
+        [HideInInspector]
+#endif
         public string stunUrl = "stun:stun.l.google.com:19302";
         [Tooltip("병원망처럼 방화벽이 강한 곳에서는 TURN 이 필요합니다. 예: turn:turn.brainz.fit:3478")]
+#if VRLINK_PARTNER
+        [HideInInspector]
+#endif
         public string turnUrl = "";
+#if VRLINK_PARTNER
+        [HideInInspector]
+#endif
         public string turnUsername = "";
+#if VRLINK_PARTNER
+        [HideInInspector]
+#endif
         public string turnCredential = "";
 
         [Header("기타")]
         [Tooltip("상태(FPS 등) 전송 간격(초)")]
+#if VRLINK_PARTNER
+        [HideInInspector]
+#endif
         public float statusInterval = 5f;
         [Tooltip("씬이 바뀌면 [Tunable]/[Monitor]/[TunableAction] 다시 수집")]
+#if VRLINK_PARTNER
+        [HideInInspector]
+#endif
         public bool rescanOnSceneLoad = true;
         [Tooltip("[Monitor] 값 변경 확인 주기(초). 각 변수의 Interval 보다 작아야 함")]
+#if VRLINK_PARTNER
+        [HideInInspector]
+#endif
         public float monitorPollInterval = 0.1f;
 
         public static VRLink Instance { get; private set; }
@@ -85,6 +127,10 @@ namespace FunBrainLab.VRLink
         {
             if (Instance != null && Instance != this) { Destroy(gameObject); return; }
             Instance = this;
+#if VRLINK_PARTNER
+            // 협력업체용 빌드: 설정은 DLL 에 고정, 인스펙터에서 바꿀 수 없음
+            PartnerConfig.Apply(this);
+#endif
             DontDestroyOnLoad(gameObject);
 
             SceneManager.sceneLoaded += OnSceneLoaded;

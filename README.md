@@ -193,3 +193,10 @@ adb shell cat /sdcard/Android/data/<패키지명>/files/vrlink/state/monitors.js
 # 기록 가져오기
 adb pull /sdcard/Android/data/<패키지명>/files/vrlink/log.jsonl
 ```
+
+## 협력기관에 프로젝트를 넘길 때 (DLL 배포판)
+Unity 메뉴 **FunBrain → VR Link → 협력업체용 DLL 패키지 내보내기…** 를 열고 Realtime Database URL·연결 코드 방식·출력 폴더를 지정해 "DLL 패키지 만들기"를 누르면
+`com.funbrainlab.vrlink/` 폴더(Runtime/FunBrainLab.VRLink.dll + package.json + README + LICENSE)가 만들어진다.
+- 상대 프로젝트의 `Packages/` 아래에 이 폴더를 복사한다. `[Tunable]`·`[Monitor]`·`[TunableAction]`·`VRLink`·`WebRtcStreamer` 는 그대로 쓸 수 있다.
+- 설정값은 DLL 안에 고정되어 인스펙터에 나타나지 않는다. 내보낸 프로젝트에 `com.unity.webrtc` 가 있었으면 받는 쪽에도 같은 패키지가 필요하다.
+- 소스를 숨길 뿐 완전한 보호는 아니다(디컴파일 가능). 비밀유지·재배포 금지 조항과 함께 쓴다. 이 저장소 자체는 비공개로 두는 것을 권장.
