@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.4.1] - 2026-11-19
+- 앱이 스스로 바꾼 조절값(PublishValues)을 control/params 에도 반영 — 웹에서 예전 값으로 되돌릴 때 이벤트가 나지 않아 적용되지 않던 문제 (웹앱 쪽에도 같은 취지의 보완이 있어 구버전 앱도 동작)
+
 ## [0.4.0] - 2026-11-05
 - 메뉴 FunBrain → VR Link → "협력업체용 DLL 패키지 내보내기…": Runtime 소스를 FunBrainLab.VRLink.dll 로 컴파일하고 Firebase 주소·연결 코드 방식·STUN 을 DLL 에 고정(VRLINK_PARTNER). 받는 쪽 인스펙터에는 설정이 보이지 않음
 

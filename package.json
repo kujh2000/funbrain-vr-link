@@ -1,6 +1,6 @@
 {
   "name": "com.funbrainlab.vrlink",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "displayName": "FunBrain VR Link",
   "description": "VR 재활 앱을 웹앱과 연결합니다: [Tunable] 조절, [Monitor] 상태 위젯, [TunableAction] 버튼, 수행 기록 전송, WebRTC 화면 스트리밍. Vive Focus Vision / Meta Quest 3 (OpenXR) 대응.",
   "unity": "6000.0",

@@ -173,7 +173,10 @@ Unity 코드의 `Widget` 값이 **기본값**이고, 웹앱 편집 모드에서 
  │ toDevice ← {type:"stop", session}      ───▶   세션 종료
 ```
 - `iceServers`: `[{urls:[…], username?, credential?}]`. 웹앱이 서버(/api/turn-credentials)에서 받은 2시간짜리 TURN 자격증명을 포함해 보낸다. 헤드셋은 있으면 이것을 우선 쓰고 저장하지 않는다. 없으면 Inspector 의 STUN/TURN 설정.
-- `session`: 웹앱이 request 마다 새로 만드는 문자열. 헤드셋은 request 의 session 을 기억하고 그 밖의 메시지는 session 이 같을 때만 처리하며, 웹앱도 자기 session 의 offer/candidate 만 받는다. 여러 창·PC 가 같은 기기를 열어 두어도 응답이 섞이지 않는다.
+- `session`: 웹앱이 request 마다 새로 만드는 문자열.
+
+### 조절값 되돌리기 주의
+RTDB 는 값이 실제로 바뀔 때만 이벤트를 보낸다. 앱이 스스로 값을 바꾸면(`PublishValues`) `values` 와 함께 `control/params` 도 갱신해 두고(v0.4.1+), 웹앱은 저장값과 같은 키를 보낼 때 먼저 비웠다가(null, 문자열은 보이지 않는 문자 추가) 다시 쓴다. 웹앱이 `control/params` 에 쓰는 `_t`(전송 시각) 키는 무시한다. 헤드셋은 request 의 session 을 기억하고 그 밖의 메시지는 session 이 같을 때만 처리하며, 웹앱도 자기 session 의 offer/candidate 만 받는다. 여러 창·PC 가 같은 기기를 열어 두어도 응답이 섞이지 않는다.
 - 영상 자체는 Firebase를 거치지 않고 P2P(또는 TURN 중계)로만 흐릅니다. Firebase에는 위 시그널 메시지만 지나갑니다.
 - 헤드셋이 offer를 만들고(송신), 웹앱은 수신 전용(`recvonly`)으로 answer합니다.
 - 새 세션 시작 시 앱이 `signal/toWeb`을 비웁니다. 웹앱도 request 전에 `signal/toDevice`를 비우세요.

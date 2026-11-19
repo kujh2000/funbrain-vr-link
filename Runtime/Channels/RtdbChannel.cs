@@ -61,7 +61,13 @@ namespace FunBrainLab.VRLink
             host.StartCoroutine(Listen($"{devicePath}/signal/toDevice", OnSignalEvent));
         }
 
-        public void PutState(string key, string json) => Send("PUT", $"{devicePath}/{key}", json);
+        public void PutState(string key, string json)
+        {
+            Send("PUT", $"{devicePath}/{key}", json);
+            // 앱이 스스로 바꾼 조절값을 control/params 에도 반영해 둔다 — 그래야 웹이 예전 값으로 되돌릴 때 RTDB 가 "바뀜"으로 보고 이벤트를 보낸다.
+            // 자기 자신에게 되돌아오는 이벤트는 값이 같아 Apply 에서 걸러진다.
+            if (key == "values") Send("PATCH", $"{devicePath}/control/params", json);
+        }
         public void PatchState(string key, string json) => Send("PATCH", $"{devicePath}/{key}", json);
         public void AppendLog(string json) => Send("POST", $"{devicePath}/logs", json);
         public void SendSignal(string json) => Send("POST", $"{devicePath}/signal/toWeb", json);
