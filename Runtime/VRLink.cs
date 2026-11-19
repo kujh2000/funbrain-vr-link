@@ -16,7 +16,7 @@ namespace FunBrainLab.VRLink
     [DefaultExecutionOrder(-1000)]
     public sealed class VRLink : MonoBehaviour
     {
-        public const string PackageVersion = "0.4.1";
+        public const string PackageVersion = "0.4.2";
 
         [Header("연결 코드")]
         [Tooltip("AskOnFirstRun: 처음 실행 때 헤드셋에서 입력(웹앱 발급 코드, 병원용) · AutoFromDevice: 기기 ID로 자동(연구실 시험) · Fixed: 아래 고정값")]
@@ -122,6 +122,7 @@ namespace FunBrainLab.VRLink
         readonly Queue<Dictionary<string, object>> pendingParams = new Queue<Dictionary<string, object>>();
         readonly Queue<Dictionary<string, object>> pendingActions = new Queue<Dictionary<string, object>>();
         float nextMonitorPoll;
+        float nextTunableCheck;
 
         void Awake()
         {
@@ -210,6 +211,12 @@ namespace FunBrainLab.VRLink
                 {
                     var json = Json.Serialize(changed);
                     foreach (var c in channels) c.PatchState("monitors", json);
+                }
+                // 앱 코드가 [Tunable] 값을 직접 바꾼 경우도 자동으로 웹에 반영 (PublishValues 를 안 불러도 됨)
+                if (Time.unscaledTime >= nextTunableCheck)
+                {
+                    nextTunableCheck = Time.unscaledTime + 0.5f;
+                    if (Registry.TunablesChangedSinceSent()) PublishValues();
                 }
             }
         }

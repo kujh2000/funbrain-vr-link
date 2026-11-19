@@ -413,7 +413,23 @@ namespace FunBrainLab.VRLink
         {
             var d = new Dictionary<string, object>();
             foreach (var e in tunables.Values) if (e.Alive) d[e.Id] = e.GetForWire();
+            lastSentValues = d;
             return d;
+        }
+
+        Dictionary<string, object> lastSentValues;
+
+        /// <summary>앱 코드가 [Tunable] 값을 직접 바꿨는지 확인 (마지막 전송값과 비교). 바뀐 것이 있으면 true</summary>
+        public bool TunablesChangedSinceSent()
+        {
+            if (lastSentValues == null) return tunables.Count > 0;
+            foreach (var e in tunables.Values)
+            {
+                if (!e.Alive) continue;
+                if (!lastSentValues.TryGetValue(e.Id, out var prev)) return true;
+                if (!Equals(prev, e.GetForWire())) return true;
+            }
+            return false;
         }
 
         /// <summary>모든 모니터 현재값 (연결 직후 전체 전송용)</summary>
